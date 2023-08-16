@@ -1,0 +1,121 @@
+syntax = "proto3";
+
+package api.user.v1;
+
+import "google/api/annotations.proto";
+
+option go_package = "chainArt/api/user/v1;v1";
+option java_multiple_files = true;
+option java_package = "api.user.v1";
+
+service User {
+	rpc Login(LoginRequest) returns(LoginReply){
+		option (google.api.http) = {
+			post: "login",
+			body: "*",
+		};
+	};
+	rpc Register(RegisterRequest) returns(RegisterReply){
+		option (google.api.http) = {
+			post: "register",
+			body: "*",
+		};
+	};
+	rpc UpdateUser (UpdateUserRequest) returns (UpdateUserReply){
+		option (google.api.http) = {
+			post: "user/updateUser",
+			body: "*",
+		};
+	};
+	rpc DeleteUser (DeleteUserRequest) returns (DeleteUserReply){
+		option (google.api.http) = {
+			get: "user/deleteUser"
+		};
+	};
+	rpc GetUser (GetUserRequest) returns (GetUserReply) {
+		option (google.api.http) = {
+			get: "user/getUser"
+		};
+	};
+	rpc ListUser (ListUserRequest) returns (ListUserReply){
+		option (google.api.http) = {
+			get: "user/listUser"
+		};
+	};
+}
+
+message LoginRequest {
+	string UserName = 1;
+	string Password = 3;
+}
+message LoginReply {
+	string token = 1;
+}
+
+message RegisterRequest {
+	string UserName = 1;
+	string NickName = 2;
+	string Password = 3;
+	string Intro = 4;
+	string Avatar = 5;
+	string Phone = 6;
+	string Email = 7;
+	string Address = 8;
+	uint32 IsEnable = 9;
+	uint32 IsAdmin = 10;
+}
+message RegisterReply {}
+
+message UpdateUserRequest {
+	int64 userId = 1;
+	string UserName = 2;
+	string NickName = 3;
+	string Password = 4;
+	string Intro = 5;
+	string Avatar = 6;
+	string Phone = 7;
+	string Email = 8;
+	string Address = 9;
+	uint32 IsEnable = 10;
+	uint32 IsAdmin = 11;
+}
+message UpdateUserReply {
+	UserResp info = 1;
+}
+
+message DeleteUserRequest {
+	int64 userId = 1;
+	string Phone = 2;
+}
+message DeleteUserReply {}
+
+message GetUserRequest {
+	int64 userId = 1;
+	string UserName = 2;
+	string Phone = 3;
+}
+message GetUserReply {
+	UserResp info = 1;
+}
+
+message ListUserRequest {
+	int64 pageSize = 1;
+	int64 pageNum = 2;
+}
+message ListUserReply {
+	int64 total = 1;
+	repeated UserResp info = 2;
+}
+
+message UserResp{
+	string UserName = 1;
+	string NickName = 2;
+	string Password = 3;
+	string Intro = 4;
+	string Avatar = 5;
+	string Phone = 6;
+	string Email = 7;
+	string Address = 8;
+	uint32 IsEnable = 9;
+	uint32 IsAdmin = 10;
+}
