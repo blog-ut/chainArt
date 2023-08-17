@@ -30,7 +30,7 @@ func (s *UserService) Login(ctx context.Context, req *pb.LoginRequest) (*pb.Logi
 		return nil, errors.NotFound("USER_NOT_FOUND", "账户不存在")
 	}
 	b := s.uc.CheckPassword(ctx, req.Password, user.Password)
-	if b {
+	if !b {
 		return nil, errors.New(500, "PASSWORD_ERROR", "密码错误")
 	}
 	tokenStr, err := token.GenToken(user.UserName, uint(user.ID))

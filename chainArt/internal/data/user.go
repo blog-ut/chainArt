@@ -62,7 +62,7 @@ func (r *userRepo) GetUser(ctx context.Context, u *biz.User) (*biz.User, error) 
 	if u.ID != 0 {
 		db.Where("id = ?", u.ID)
 	} else if u.UserName != "" {
-		db.Where("user_name + ?", u.UserName)
+		db.Where("user_name = ?", u.UserName)
 	} else if u.Phone != "" {
 		db.Where("phone = ?", u.Phone)
 	}
@@ -91,7 +91,7 @@ func (r *userRepo) Update(ctx context.Context, u *biz.User) (bool, error) {
 		return false, errors.New(500, "INVALID_PARAM", "ID为空")
 	}
 	userInfo := BuildUser(u)
-	if userInfo.Password != "" {
+	if u.Password != "" {
 		userInfo.SetPassword(u.Password)
 	}
 	if err := r.data.db.Model(User{}).Where("id = ?", u.ID).Updates(userInfo).Error; err != nil {
@@ -145,6 +145,7 @@ func BuildUserToBiz(user *User) *biz.User {
 	return &biz.User{
 		UserName: user.UserName,
 		NickName: user.NickName,
+		Password: user.Password,
 		Intro:    user.Intro,
 		Avatar:   user.Avatar,
 		Phone:    user.Phone,
