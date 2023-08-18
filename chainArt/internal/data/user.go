@@ -61,9 +61,11 @@ func (r *userRepo) GetUser(ctx context.Context, u *biz.User) (*biz.User, error) 
 	db := r.data.db.Model(&user)
 	if u.ID != 0 {
 		db.Where("id = ?", u.ID)
-	} else if u.UserName != "" {
+	}
+	if u.UserName != "" {
 		db.Where("user_name = ?", u.UserName)
-	} else if u.Phone != "" {
+	}
+	if u.Phone != "" {
 		db.Where("phone = ?", u.Phone)
 	}
 	result := db.First(&user)
@@ -143,6 +145,7 @@ func BuildUser(user *biz.User) *User {
 
 func BuildUserToBiz(user *User) *biz.User {
 	return &biz.User{
+		ID:       int64(user.ID),
 		UserName: user.UserName,
 		NickName: user.NickName,
 		Password: user.Password,

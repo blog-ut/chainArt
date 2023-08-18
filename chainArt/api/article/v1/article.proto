@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package api.article.v1;
 
+import "google/api/annotations.proto";
+
 option go_package = "chainArt/api/article/v1;v1";
 option java_multiple_files = true;
 option java_package = "api.article.v1";

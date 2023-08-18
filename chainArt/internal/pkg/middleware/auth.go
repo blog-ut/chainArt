@@ -30,7 +30,7 @@ func Auth() middleware.Middleware {
 				}
 				id := strconv.Itoa(int(userClaims.UserId))
 				ctx = metadata.NewServerContext(ctx, metadata.New(map[string][]string{
-					"id":       {id},
+					"userId":   {id},
 					"username": {userClaims.Username},
 				}))
 			}

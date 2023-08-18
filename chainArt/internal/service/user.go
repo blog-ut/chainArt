@@ -7,6 +7,8 @@ import (
 	"fmt"
 	"github.com/go-kratos/kratos/v2/errors"
 	"github.com/go-kratos/kratos/v2/log"
+	"github.com/go-kratos/kratos/v2/metadata"
+	"strconv"
 
 	pb "chainArt/api/user/v1"
 )
@@ -83,8 +85,17 @@ func (s *UserService) DeleteUser(ctx context.Context, req *pb.DeleteUserRequest)
 	return &pb.DeleteUserReply{}, nil
 }
 func (s *UserService) GetUser(ctx context.Context, req *pb.GetUserRequest) (*pb.GetUserReply, error) {
+	var userId int64
+	if req.GetUserId() == 0 {
+		if md, ok := metadata.FromServerContext(ctx); ok {
+			userId, _ = strconv.ParseInt(md.Get("userId"), 10, 64)
+			fmt.Println(userId)
+		}
+	} else {
+		userId = req.GetUserId()
+	}
 	user, err := s.uc.GetUser(ctx, &biz.User{
-		ID:       req.GetUserId(),
+		ID:       userId,
 		Phone:    req.GetPhone(),
 		UserName: req.GetUserName(),
 	})

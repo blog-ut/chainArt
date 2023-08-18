@@ -3,19 +3,19 @@
 
 openapi: 3.0.3
 info:
-    title: User API
+    title: File API
     version: 0.0.1
 paths:
-    login:
+    /v1/uploadFile:
         post:
             tags:
-                - User
-            operationId: User_Login
+                - File
+            operationId: File_UploadFile
             requestBody:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/LoginRequest'
+                            type: string
                 required: true
             responses:
                 "200":
@@ -23,144 +23,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/LoginReply'
-                default:
-                    description: Default error response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Status'
-    register:
-        post:
-            tags:
-                - User
-            operationId: User_Register
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/RegisterRequest'
-                required: true
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/RegisterReply'
-                default:
-                    description: Default error response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Status'
-    user/deleteUser:
-        get:
-            tags:
-                - User
-            operationId: User_DeleteUser
-            parameters:
-                - name: userId
-                  in: query
-                  schema:
-                    type: integer
-                    format: int64
-                - name: Phone
-                  in: query
-                  schema:
-                    type: string
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/DeleteUserReply'
-                default:
-                    description: Default error response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Status'
-    user/getUser:
-        get:
-            tags:
-                - User
-            operationId: User_GetUser
-            parameters:
-                - name: userId
-                  in: query
-                  schema:
-                    type: integer
-                    format: int64
-                - name: UserName
-                  in: query
-                  schema:
-                    type: string
-                - name: Phone
-                  in: query
-                  schema:
-                    type: string
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/GetUserReply'
-                default:
-                    description: Default error response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Status'
-    user/listUser:
-        get:
-            tags:
-                - User
-            operationId: User_ListUser
-            parameters:
-                - name: pageSize
-                  in: query
-                  schema:
-                    type: integer
-                    format: int64
-                - name: pageNum
-                  in: query
-                  schema:
-                    type: integer
-                    format: int64
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ListUserReply'
-                default:
-                    description: Default error response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Status'
-    user/updateUser:
-        post:
-            tags:
-                - User
-            operationId: User_UpdateUser
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/UpdateUserRequest'
-                required: true
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/UpdateUserReply'
+                                $ref: '#/components/schemas/UploadFileReply'
                 default:
                     description: Default error response
                     content:
@@ -169,14 +32,6 @@ paths:
                                 $ref: '#/components/schemas/Status'
 components:
     schemas:
-        DeleteUserReply:
-            type: object
-            properties: {}
-        GetUserReply:
-            type: object
-            properties:
-                info:
-                    $ref: '#/components/schemas/UserResp'
         GoogleProtobufAny:
             type: object
             properties:
@@ -185,56 +40,6 @@ components:
                     description: The type of the serialized message.
             additionalProperties: true
             description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
-        ListUserReply:
-            type: object
-            properties:
-                total:
-                    type: integer
-                    format: int64
-                info:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/UserResp'
-        LoginReply:
-            type: object
-            properties:
-                token:
-                    type: string
-        LoginRequest:
-            type: object
-            properties:
-                UserName:
-                    type: string
-                Password:
-                    type: string
-        RegisterReply:
-            type: object
-            properties: {}
-        RegisterRequest:
-            type: object
-            properties:
-                UserName:
-                    type: string
-                NickName:
-                    type: string
-                Password:
-                    type: string
-                Intro:
-                    type: string
-                Avatar:
-                    type: string
-                Phone:
-                    type: string
-                Email:
-                    type: string
-                Address:
-                    type: string
-                IsEnable:
-                    type: integer
-                    format: uint32
-                IsAdmin:
-                    type: integer
-                    format: uint32
         Status:
             type: object
             properties:
@@ -251,63 +56,10 @@ components:
                         $ref: '#/components/schemas/GoogleProtobufAny'
                     description: A list of messages that carry the error details.  There is a common set of message types for APIs to use.
             description: 'The `Status` type defines a logical error model that is suitable for different programming environments, including REST APIs and RPC APIs. It is used by [gRPC](https://github.com/grpc). Each `Status` message contains three pieces of data: error code, error message, and error details. You can find out more about this error model and how to work with it in the [API Design Guide](https://cloud.google.com/apis/design/errors).'
-        UpdateUserReply:
+        UploadFileReply:
             type: object
             properties:
-                info:
-                    $ref: '#/components/schemas/UserResp'
-        UpdateUserRequest:
-            type: object
-            properties:
-                userId:
-                    type: integer
-                    format: int64
-                UserName:
+                filePath:
                     type: string
-                NickName:
-                    type: string
-                Password:
-                    type: string
-                Intro:
-                    type: string
-                Avatar:
-                    type: string
-                Phone:
-                    type: string
-                Email:
-                    type: string
-                Address:
-                    type: string
-                IsEnable:
-                    type: integer
-                    format: uint32
-                IsAdmin:
-                    type: integer
-                    format: uint32
-        UserResp:
-            type: object
-            properties:
-                UserName:
-                    type: string
-                NickName:
-                    type: string
-                Password:
-                    type: string
-                Intro:
-                    type: string
-                Avatar:
-                    type: string
-                Phone:
-                    type: string
-                Email:
-                    type: string
-                Address:
-                    type: string
-                IsEnable:
-                    type: integer
-                    format: uint32
-                IsAdmin:
-                    type: integer
-                    format: uint32
 tags:
-    - name: User
+    - name: File
