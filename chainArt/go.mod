@@ -3,12 +3,12 @@ module chainArt
 go 1.19
 
 require (
-	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/go-kratos/grpc-gateway/v2 v2.5.1-0.20210811062259-c92d36e434b1
 	github.com/go-kratos/kratos/v2 v2.7.0
 	github.com/go-kratos/swagger-api v1.0.1
 	github.com/go-redis/redis/extra/redisotel v0.3.0
 	github.com/go-redis/redis/v8 v8.11.5
+	github.com/golang-jwt/jwt/v5 v5.0.0
 	github.com/google/uuid v1.3.0
 	github.com/google/wire v0.5.0
 	github.com/qiniu/go-sdk/v7 v7.17.0

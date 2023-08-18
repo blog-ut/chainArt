@@ -8,7 +8,7 @@ package token
 import (
 	"crypto/md5"
 	"fmt"
-	"github.com/dgrijalva/jwt-go"
+	"github.com/golang-jwt/jwt/v5"
 	"math/rand"
 	"strconv"
 	"strings"
@@ -22,7 +22,7 @@ const TokenExpireDuration = 2 * time.Hour
 type Claims struct {
 	Username string `json:"username"`
 	UserId   uint   `json:"userId"`
-	jwt.StandardClaims
+	jwt.RegisteredClaims
 }
 
 // GetMd5
@@ -36,9 +36,10 @@ func GenToken(username string, userId uint) (string, error) {
 	c := Claims{
 		Username: username,
 		UserId:   userId,
-		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: time.Now().Add(TokenExpireDuration).Unix(),
-			Issuer:    "TEST001",
+		RegisteredClaims: jwt.RegisteredClaims{
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(TokenExpireDuration * time.Duration(1))), // 过期时间12小时
+			IssuedAt:  jwt.NewNumericDate(time.Now()),                                             // 签发时间
+			NotBefore: jwt.NewNumericDate(time.Now()),                                             // 生效时间
 		},
 	}
 	//使用指定的签名方法创建签名对象
