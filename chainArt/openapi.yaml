@@ -6,7 +6,7 @@ info:
     title: File API
     version: 0.0.1
 paths:
-    /v1/uploadFile:
+    /v1/upload:
         post:
             tags:
                 - File

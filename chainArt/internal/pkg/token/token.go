@@ -9,7 +9,6 @@ import (
 	"crypto/md5"
 	"fmt"
 	"github.com/dgrijalva/jwt-go"
-	uuid "github.com/satori/go.uuid"
 	"math/rand"
 	"strconv"
 	"strings"
@@ -72,12 +71,6 @@ func VerifyToken(tokenStr string) bool {
 		return false
 	}
 	return true
-}
-
-// GetUUID
-// 生成唯一码
-func GetUUID() string {
-	return uuid.NewV4().String()
 }
 
 // GetRand

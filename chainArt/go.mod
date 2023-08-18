@@ -12,7 +12,6 @@ require (
 	github.com/google/uuid v1.3.0
 	github.com/google/wire v0.5.0
 	github.com/qiniu/go-sdk/v7 v7.17.0
-	github.com/satori/go.uuid v1.2.0
 	go.uber.org/automaxprocs v1.5.3
 	golang.org/x/crypto v0.12.0
 	google.golang.org/genproto/googleapis/api v0.0.0-20230815205213-6bfd019c3878
