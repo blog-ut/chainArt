@@ -1,5 +1,6 @@
 ### chainArt
 区块链的开源创作社区
+[![Security Status](https://www.murphysec.com/platform3/v31/badge/1692592543501275136.svg)](https://www.murphysec.com/console/report/1692585989234380800/1692592543501275136)
 ## 安装geth
 
 ```text
