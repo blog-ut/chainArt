@@ -50,11 +50,12 @@ func NewUserRepo(data *Data, logger log.Logger) biz.UserRepo {
 }
 
 func (r *userRepo) Create(ctx context.Context, u *biz.User) (*biz.User, error) {
-	var user User
-	if err := r.data.db.Model(&user).Create(BuildUser(u)).Error; err != nil {
+	user := BuildUser(u)
+	user.SetPassword(u.Password)
+	if err := r.data.db.Model(&user).Create(&user).Error; err != nil {
 		return nil, err
 	}
-	return BuildUserToBiz(&user), nil
+	return BuildUserToBiz(user), nil
 }
 func (r *userRepo) GetUser(ctx context.Context, u *biz.User) (*biz.User, error) {
 	var user User
