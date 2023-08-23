@@ -9,15 +9,45 @@ option java_multiple_files = true;
 option java_package = "api.article.v1";
 
 service Article {
-	rpc CreateArticle (CreateArticleRequest) returns (CreateArticleReply);
+	rpc CreateArticle (CreateArticleRequest) returns (CreateArticleReply){
+		option (google.api.http) = {
+			post: "/v1/article/createArticle",
+			body: "*"
+		};
+	};
 	rpc UpdateArticle (UpdateArticleRequest) returns (UpdateArticleReply);
 	rpc DeleteArticle (DeleteArticleRequest) returns (DeleteArticleReply);
-	rpc GetArticle (GetArticleRequest) returns (GetArticleReply);
-	rpc ListArticle (ListArticleRequest) returns (ListArticleReply);
+	rpc GetArticle (GetArticleRequest) returns (GetArticleReply){
+		option (google.api.http) = {
+			get: "/v1/article/getArticle"
+		};
+	};
+	rpc ListArticle (ListArticleRequest) returns (ListArticleReply){
+		option (google.api.http) = {
+			post: "/v1/article/listArticle",
+			body: "*"
+		};
+	};
 }
 
-message CreateArticleRequest {}
-message CreateArticleReply {}
+message CreateArticleRequest {
+	int64 UserId = 1;
+	int64 CategoryId = 2;
+	string Title = 3;
+	string Intro = 4;
+	string Cover = 5;
+	string Content = 6;
+	string ContentMd = 7;
+	string Code = 8;
+	repeated string KeyWords = 9;
+	int64 Sort = 10;
+	int64 IsElite = 11;
+	int64 Hits = 12;
+	int64 ArticleStatus = 13;
+}
+message CreateArticleReply {
+	ArticleResp info = 1;
+}
 
 message UpdateArticleRequest {}
 message UpdateArticleReply {}
@@ -25,8 +55,40 @@ message UpdateArticleReply {}
 message DeleteArticleRequest {}
 message DeleteArticleReply {}
 
-message GetArticleRequest {}
-message GetArticleReply {}
+message GetArticleRequest {
+	int64 Id = 1;
+	string Code = 2;
+}
+message GetArticleReply {
+	ArticleResp info = 1;
+}
 
-message ListArticleRequest {}
-message ListArticleReply {}
+message ListArticleRequest {
+	int64 pageSize = 1;
+	int64 pageNum = 2;
+	string Title = 3;
+	int64 CategoryId = 4;
+	repeated string KeyWords = 5;
+}
+message ListArticleReply {
+	int64 total = 1;
+	repeated ArticleResp info = 2;
+}
+
+message ArticleResp{
+	int64 Id = 1;
+	int64 UserId = 2;
+	int64 CategoryId = 3;
+	string Title = 4;
+	string Intro = 5;
+	string Cover = 6;
+	string Content = 7;
+	string ContentMd = 8;
+	string Code = 9;
+	repeated string KeyWords = 10;
+	int64 IsElite = 11;
+	int64 Hits = 12;
+	int64 ArticleStatus = 13;
+	int64 CreateAt = 14;
+	int64 UpdateAt = 15;
+}

@@ -3,8 +3,228 @@
 
 openapi: 3.0.3
 info:
-    title: ""
+    title: Article API
     version: 0.0.1
-paths: {}
+paths:
+    /v1/article/createArticle:
+        post:
+            tags:
+                - Article
+            operationId: Article_CreateArticle
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CreateArticleRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CreateArticleReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+    /v1/article/getArticle:
+        get:
+            tags:
+                - Article
+            operationId: Article_GetArticle
+            parameters:
+                - name: Id
+                  in: query
+                  schema:
+                    type: integer
+                    format: int64
+                - name: Code
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/GetArticleReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+    /v1/article/listArticle:
+        post:
+            tags:
+                - Article
+            operationId: Article_ListArticle
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ListArticleRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ListArticleReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
 components:
-    schemas: {}
+    schemas:
+        ArticleResp:
+            type: object
+            properties:
+                Id:
+                    type: integer
+                    format: int64
+                UserId:
+                    type: integer
+                    format: int64
+                CategoryId:
+                    type: integer
+                    format: int64
+                Title:
+                    type: string
+                Intro:
+                    type: string
+                Cover:
+                    type: string
+                Content:
+                    type: string
+                ContentMd:
+                    type: string
+                Code:
+                    type: string
+                KeyWords:
+                    type: array
+                    items:
+                        type: string
+                IsElite:
+                    type: integer
+                    format: int64
+                Hits:
+                    type: integer
+                    format: int64
+                ArticleStatus:
+                    type: integer
+                    format: int64
+                CreateAt:
+                    type: integer
+                    format: int64
+                UpdateAt:
+                    type: integer
+                    format: int64
+        CreateArticleReply:
+            type: object
+            properties:
+                info:
+                    $ref: '#/components/schemas/ArticleResp'
+        CreateArticleRequest:
+            type: object
+            properties:
+                UserId:
+                    type: integer
+                    format: int64
+                CategoryId:
+                    type: integer
+                    format: int64
+                Title:
+                    type: string
+                Intro:
+                    type: string
+                Cover:
+                    type: string
+                Content:
+                    type: string
+                ContentMd:
+                    type: string
+                Code:
+                    type: string
+                KeyWords:
+                    type: array
+                    items:
+                        type: string
+                Sort:
+                    type: integer
+                    format: int64
+                IsElite:
+                    type: integer
+                    format: int64
+                Hits:
+                    type: integer
+                    format: int64
+                ArticleStatus:
+                    type: integer
+                    format: int64
+        GetArticleReply:
+            type: object
+            properties:
+                info:
+                    $ref: '#/components/schemas/ArticleResp'
+        GoogleProtobufAny:
+            type: object
+            properties:
+                '@type':
+                    type: string
+                    description: The type of the serialized message.
+            additionalProperties: true
+            description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+        ListArticleReply:
+            type: object
+            properties:
+                total:
+                    type: integer
+                    format: int64
+                info:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/ArticleResp'
+        ListArticleRequest:
+            type: object
+            properties:
+                pageSize:
+                    type: integer
+                    format: int64
+                pageNum:
+                    type: integer
+                    format: int64
+                Title:
+                    type: string
+                CategoryId:
+                    type: integer
+                    format: int64
+                KeyWords:
+                    type: array
+                    items:
+                        type: string
+        Status:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    description: The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].
+                    format: int32
+                message:
+                    type: string
+                    description: A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
+                details:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/GoogleProtobufAny'
+                    description: A list of messages that carry the error details.  There is a common set of message types for APIs to use.
+            description: 'The `Status` type defines a logical error model that is suitable for different programming environments, including REST APIs and RPC APIs. It is used by [gRPC](https://github.com/grpc). Each `Status` message contains three pieces of data: error code, error message, and error details. You can find out more about this error model and how to work with it in the [API Design Guide](https://cloud.google.com/apis/design/errors).'
+tags:
+    - name: Article

@@ -17,7 +17,7 @@ import (
 )
 
 // ProviderSet is data providers.
-var ProviderSet = wire.NewSet(NewData, NewDB, NewRedis, NewUserRepo)
+var ProviderSet = wire.NewSet(NewData, NewDB, NewRedis, NewUserRepo, NewArticleRepo)
 
 // Data .
 type Data struct {
@@ -66,7 +66,7 @@ func NewDB(c *conf.Data) *gorm.DB {
 
 // 自动迁移
 func migrate(db *gorm.DB) {
-	if err := db.AutoMigrate(&User{}); err != nil {
+	if err := db.AutoMigrate(&User{}, &Article{}, &Category{}); err != nil {
 		log.Errorf("migrate error: %v", err)
 	}
 }

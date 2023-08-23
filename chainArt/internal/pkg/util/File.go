@@ -14,7 +14,7 @@ import (
 	"io"
 )
 
-func FilePush(byteData io.Reader, size int64) (string, error) {
+func UploadFile(byteData io.Reader, size int64) (string, error) {
 	bucket := "micro-ut"
 	putPolicy := storage.PutPolicy{
 		Scope: bucket,

@@ -11,35 +11,35 @@ option java_package = "api.user.v1";
 service User {
 	rpc Login(LoginRequest) returns(LoginReply){
 		option (google.api.http) = {
-			post: "/login",
+			post: "/v1/login",
 			body: "*",
 		};
 	};
 	rpc Register(RegisterRequest) returns(RegisterReply){
 		option (google.api.http) = {
-			post: "/register",
+			post: "/v1/register",
 			body: "*",
 		};
 	};
 	rpc UpdateUser (UpdateUserRequest) returns (UpdateUserReply){
 		option (google.api.http) = {
-			post: "/user/updateUser",
+			post: "/v1/user/updateUser",
 			body: "*",
 		};
 	};
 	rpc DeleteUser (DeleteUserRequest) returns (DeleteUserReply){
 		option (google.api.http) = {
-			get: "/user/deleteUser"
+			get: "/v1/user/deleteUser"
 		};
 	};
 	rpc GetUser (GetUserRequest) returns (GetUserReply) {
 		option (google.api.http) = {
-			get: "/user/getUser"
+			get: "/v1/user/getUser"
 		};
 	};
 	rpc ListUser (ListUserRequest) returns (ListUserReply){
 		option (google.api.http) = {
-			get: "/user/listUser"
+			get: "/v1/user/listUser"
 		};
 	};
 }

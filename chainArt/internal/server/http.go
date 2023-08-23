@@ -1,7 +1,8 @@
 package server
 
 import (
-	v1 "chainArt/api/user/v1"
+	article "chainArt/api/article/v1"
+	user "chainArt/api/user/v1"
 	"chainArt/internal/conf"
 	"chainArt/internal/pkg/middleware"
 	"chainArt/internal/pkg/util"
@@ -15,7 +16,7 @@ import (
 )
 
 // NewHTTPServer new an HTTP server.
-func NewHTTPServer(c *conf.Server, greeter *service.UserService, logger log.Logger) *http.Server {
+func NewHTTPServer(c *conf.Server, userService *service.UserService, articleService *service.ArticleService, logger log.Logger) *http.Server {
 	var opts = []http.ServerOption{
 		http.Middleware(
 			recovery.Recovery(),
@@ -32,6 +33,19 @@ func NewHTTPServer(c *conf.Server, greeter *service.UserService, logger log.Logg
 		opts = append(opts, http.Timeout(c.Http.Timeout.AsDuration()))
 	}
 	srv := http.NewServer(opts...)
+	uploadFile(srv)
+	openAPIhandler := openapiv2.NewHandler(
+		openapiv2.WithGeneratorOptions(
+			generator.UseJSONNamesForFields(false),
+			generator.EnumsAsInts(true)))
+
+	srv.HandlePrefix("/q/", openAPIhandler)
+	user.RegisterUserHTTPServer(srv, userService)
+	article.RegisterArticleHTTPServer(srv, articleService)
+	return srv
+}
+
+func uploadFile(srv *http.Server) {
 	route := srv.Route("/v1")
 	route.POST("/upload", func(ctx http.Context) error {
 		req := ctx.Request()
@@ -42,19 +56,11 @@ func NewHTTPServer(c *conf.Server, greeter *service.UserService, logger log.Logg
 		defer f.Close()
 		file, err := h.Open()
 
-		path, err := util.FilePush(file, h.Size)
+		path, err := util.UploadFile(file, h.Size)
 		if err != nil {
 			return err
 		}
 		return ctx.JSON(200, path)
 
 	})
-	openAPIhandler := openapiv2.NewHandler(
-		openapiv2.WithGeneratorOptions(
-			generator.UseJSONNamesForFields(false),
-			generator.EnumsAsInts(true)))
-
-	srv.HandlePrefix("/q/", openAPIhandler)
-	v1.RegisterUserHTTPServer(srv, greeter)
-	return srv
 }
