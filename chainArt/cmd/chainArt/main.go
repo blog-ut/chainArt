@@ -2,7 +2,6 @@ package main
 
 import (
 	"flag"
-	"github.com/go-kratos/kratos/v2/registry"
 	"os"
 
 	"chainArt/internal/conf"
@@ -21,6 +20,7 @@ import (
 // go build -ldflags "-X main.Version=x.y.z"
 var (
 	// Name is the name of the compiled software.
+
 	Name = "geth.chainArt"
 	// Version is the version of the compiled software.
 	Version = "v1"
@@ -34,7 +34,7 @@ func init() {
 	flag.StringVar(&flagconf, "conf", "../../configs", "config path, eg: -conf config.yaml")
 }
 
-func newApp(logger log.Logger, gs *grpc.Server, hs *http.Server, rr registry.Registrar) *kratos.App {
+func newApp(logger log.Logger, gs *grpc.Server, hs *http.Server) *kratos.App {
 	return kratos.New(
 		kratos.ID(id+".geth.chainArt"),
 		kratos.Name(Name),
@@ -45,7 +45,6 @@ func newApp(logger log.Logger, gs *grpc.Server, hs *http.Server, rr registry.Reg
 			gs,
 			hs,
 		),
-		kratos.Registrar(rr),
 	)
 }
 
@@ -76,10 +75,7 @@ func main() {
 		panic(err)
 	}
 
-	// 引入consul
-	var rc conf.Registry
-
-	app, cleanup, err := wireApp(bc.Server, bc.Data, &rc, logger)
+	app, cleanup, err := wireApp(bc.Server, bc.Data, logger)
 	if err != nil {
 		panic(err)
 	}

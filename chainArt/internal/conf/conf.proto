@@ -42,15 +42,3 @@ message Data {
   Redis redis = 2;
 }
 
-message Trace {
-  string endpoint = 1;
-}
-
-message Registry {
-  message Consul {
-    string address = 1;
-    string scheme = 2;
-  }
-  Consul consul = 1;
-}
-

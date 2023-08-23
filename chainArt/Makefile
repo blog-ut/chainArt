@@ -58,6 +58,7 @@ generate:
 
 wire:
 	cd cmd/chainArt/ && wire
+
 .PHONY: all
 # generate all
 all:
