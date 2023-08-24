@@ -24,7 +24,7 @@ type Article struct {
 	Content       string    `gorm:"type:text;comment:文章内容"`
 	ContentMd     string    `gorm:"type:text;comment:文章内容-markdown"`
 	Code          string    `gorm:"not null;comment:文章编码"`
-	KeyWords      util.Strs `gorm:"comment:关键字"`
+	KeyWords      util.Strs `gorm:"type:text;comment:关键字"`
 	Sort          int64     `gorm:"comment:排序"`
 	IsElite       int64     `gorm:"comment:是否推荐"`
 	Hits          int64     `gorm:"comment:浏览量"`
@@ -116,6 +116,7 @@ func BuildArticle(article *domain.Article) *Article {
 
 func BuildArticleByBiz(article *Article) *domain.Article {
 	return &domain.Article{
+		Id:            int64(article.ID),
 		UserId:        article.UserId,
 		CategoryId:    article.CategoryId,
 		Title:         article.Title,
@@ -128,7 +129,7 @@ func BuildArticleByBiz(article *Article) *domain.Article {
 		IsElite:       article.IsElite,
 		Hits:          article.Hits,
 		ArticleStatus: article.ArticleStatus,
-		CreateAt:      article.CreatedAt.Unix(),
-		UpdateAt:      article.UpdatedAt.Unix(),
+		CreateAt:      article.CreatedAt.Format("2006-01-02 15:04:05"),
+		UpdateAt:      article.UpdatedAt.Format("2006-01-02 15:04:05"),
 	}
 }

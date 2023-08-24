@@ -4,7 +4,11 @@ import (
 	"chainArt/internal/biz"
 	"chainArt/internal/domain"
 	"context"
+	"fmt"
 	"github.com/go-kratos/kratos/v2/log"
+	"github.com/go-kratos/kratos/v2/metadata"
+	"strconv"
+	"time"
 
 	pb "chainArt/api/article/v1"
 )
@@ -20,25 +24,33 @@ func NewArticleService(ar *biz.ArticleUsecase, logger log.Logger) *ArticleServic
 }
 
 func (s *ArticleService) CreateArticle(ctx context.Context, req *pb.CreateArticleRequest) (*pb.CreateArticleReply, error) {
-	_, err := s.ar.Create(ctx, &domain.Article{
-		UserId:        req.GetUserId(),
+	var userId int64
+	if md, ok := metadata.FromServerContext(ctx); ok {
+		userId, _ = strconv.ParseInt(md.Get("userId"), 10, 64)
+		fmt.Println(userId)
+	}
+	code := fmt.Sprintf("A-%v-%v", userId, time.Now().Unix())
+	article, err := s.ar.Create(ctx, &domain.Article{
+		UserId:        userId,
 		CategoryId:    req.GetCategoryId(),
 		Title:         req.GetTitle(),
 		Intro:         req.GetIntro(),
 		Cover:         req.GetCover(),
 		Content:       req.GetContent(),
 		ContentMd:     req.GetContentMd(),
-		Code:          req.GetCode(),
+		Code:          code,
 		KeyWords:      req.GetKeyWords(),
 		Sort:          req.GetSort(),
 		IsElite:       req.GetIsElite(),
-		Hits:          req.GetHits(),
+		Hits:          0,
 		ArticleStatus: req.GetArticleStatus(),
 	})
 	if err != nil {
 		return nil, err
 	}
-	return &pb.CreateArticleReply{}, nil
+	return &pb.CreateArticleReply{
+		Info: BuildArticle(article),
+	}, nil
 }
 func (s *ArticleService) UpdateArticle(ctx context.Context, req *pb.UpdateArticleRequest) (*pb.UpdateArticleReply, error) {
 	return &pb.UpdateArticleReply{}, nil

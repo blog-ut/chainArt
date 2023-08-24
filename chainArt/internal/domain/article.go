@@ -20,6 +20,6 @@ type Article struct {
 	IsElite       int64
 	Hits          int64
 	ArticleStatus int64
-	CreateAt      int64
-	UpdateAt      int64
+	CreateAt      string
+	UpdateAt      string
 }

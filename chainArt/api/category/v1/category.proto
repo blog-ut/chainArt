@@ -1,0 +1,59 @@
+syntax = "proto3";
+
+package api.category.v1;
+
+import "google/api/annotations.proto";
+
+option go_package = "chainArt/api/category/v1;v1";
+option java_multiple_files = true;
+option java_package = "api.category.v1";
+
+service Category {
+  rpc CreateCategory (CreateCategoryRequest) returns (CreateCategoryReply){
+    option (google.api.http) = {
+      post: "/v1/category/create"
+      body: "*"
+    };
+  };
+  rpc GetCategory (GetCategoryRequest) returns (GetCategoryReply){
+    option (google.api.http) = {
+      get: "/v1/category/getCategory"
+    };
+  };
+  rpc ListCategory (ListCategoryRequest) returns (ListCategoryReply){
+    option (google.api.http) = {
+      post: "/v1/category/listCategory"
+      body: "*"
+    };
+  };
+}
+
+message CreateCategoryRequest {
+  string Code = 1;
+  string Name = 2;
+  string ParentId = 3;
+}
+message CreateCategoryReply {}
+
+message GetCategoryRequest {
+	int64 Id = 1;
+}
+message GetCategoryReply {
+	CategoryResp info = 1;
+}
+
+message ListCategoryRequest {
+	int64 pageSize = 1;
+	int64 pageNum = 2;
+}
+message ListCategoryReply {
+  int64 total = 1;
+	repeated CategoryResp info = 2;
+}
+
+message CategoryResp {
+	int64 Id = 1;
+	string Code = 2;
+	string Name = 3;
+	string ParentId = 4;
+}

@@ -3,19 +3,19 @@
 
 openapi: 3.0.3
 info:
-    title: Article API
+    title: Category API
     version: 0.0.1
 paths:
-    /v1/article/createArticle:
+    /v1/category/create:
         post:
             tags:
-                - Article
-            operationId: Article_CreateArticle
+                - Category
+            operationId: Category_CreateCategory
             requestBody:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/CreateArticleRequest'
+                            $ref: '#/components/schemas/CreateCategoryRequest'
                 required: true
             responses:
                 "200":
@@ -23,51 +23,47 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/CreateArticleReply'
+                                $ref: '#/components/schemas/CreateCategoryReply'
                 default:
                     description: Default error response
                     content:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Status'
-    /v1/article/getArticle:
+    /v1/category/getCategory:
         get:
             tags:
-                - Article
-            operationId: Article_GetArticle
+                - Category
+            operationId: Category_GetCategory
             parameters:
                 - name: Id
                   in: query
                   schema:
                     type: integer
                     format: int64
-                - name: Code
-                  in: query
-                  schema:
-                    type: string
             responses:
                 "200":
                     description: OK
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/GetArticleReply'
+                                $ref: '#/components/schemas/GetCategoryReply'
                 default:
                     description: Default error response
                     content:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Status'
-    /v1/article/listArticle:
+    /v1/category/listCategory:
         post:
             tags:
-                - Article
-            operationId: Article_ListArticle
+                - Category
+            operationId: Category_ListCategory
             requestBody:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/ListArticleRequest'
+                            $ref: '#/components/schemas/ListCategoryRequest'
                 required: true
             responses:
                 "200":
@@ -75,7 +71,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/ListArticleReply'
+                                $ref: '#/components/schemas/ListCategoryReply'
                 default:
                     description: Default error response
                     content:
@@ -84,96 +80,35 @@ paths:
                                 $ref: '#/components/schemas/Status'
 components:
     schemas:
-        ArticleResp:
+        CategoryResp:
             type: object
             properties:
                 Id:
                     type: integer
                     format: int64
-                UserId:
-                    type: integer
-                    format: int64
-                CategoryId:
-                    type: integer
-                    format: int64
-                Title:
-                    type: string
-                Intro:
-                    type: string
-                Cover:
-                    type: string
-                Content:
-                    type: string
-                ContentMd:
-                    type: string
                 Code:
                     type: string
-                KeyWords:
-                    type: array
-                    items:
-                        type: string
-                IsElite:
-                    type: integer
-                    format: int64
-                Hits:
-                    type: integer
-                    format: int64
-                ArticleStatus:
-                    type: integer
-                    format: int64
-                CreateAt:
-                    type: integer
-                    format: int64
-                UpdateAt:
-                    type: integer
-                    format: int64
-        CreateArticleReply:
+                Name:
+                    type: string
+                ParentId:
+                    type: string
+        CreateCategoryReply:
+            type: object
+            properties: {}
+        CreateCategoryRequest:
+            type: object
+            properties:
+                Code:
+                    type: string
+                Name:
+                    type: string
+                ParentId:
+                    type: string
+        GetCategoryReply:
             type: object
             properties:
                 info:
-                    $ref: '#/components/schemas/ArticleResp'
-        CreateArticleRequest:
-            type: object
-            properties:
-                UserId:
-                    type: integer
-                    format: int64
-                CategoryId:
-                    type: integer
-                    format: int64
-                Title:
-                    type: string
-                Intro:
-                    type: string
-                Cover:
-                    type: string
-                Content:
-                    type: string
-                ContentMd:
-                    type: string
-                Code:
-                    type: string
-                KeyWords:
-                    type: array
-                    items:
-                        type: string
-                Sort:
-                    type: integer
-                    format: int64
-                IsElite:
-                    type: integer
-                    format: int64
-                Hits:
-                    type: integer
-                    format: int64
-                ArticleStatus:
-                    type: integer
-                    format: int64
-        GetArticleReply:
-            type: object
-            properties:
-                info:
-                    $ref: '#/components/schemas/ArticleResp'
+                    $ref: '#/components/schemas/CategoryResp'
         GoogleProtobufAny:
             type: object
             properties:
@@ -182,7 +117,7 @@ components:
                     description: The type of the serialized message.
             additionalProperties: true
             description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
-        ListArticleReply:
+        ListCategoryReply:
             type: object
             properties:
                 total:
@@ -191,8 +126,8 @@ components:
                 info:
                     type: array
                     items:
-                        $ref: '#/components/schemas/ArticleResp'
-        ListArticleRequest:
+                        $ref: '#/components/schemas/CategoryResp'
+        ListCategoryRequest:
             type: object
             properties:
                 pageSize:
@@ -201,15 +136,6 @@ components:
                 pageNum:
                     type: integer
                     format: int64
-                Title:
-                    type: string
-                CategoryId:
-                    type: integer
-                    format: int64
-                KeyWords:
-                    type: array
-                    items:
-                        type: string
         Status:
             type: object
             properties:
@@ -227,4 +153,4 @@ components:
                     description: A list of messages that carry the error details.  There is a common set of message types for APIs to use.
             description: 'The `Status` type defines a logical error model that is suitable for different programming environments, including REST APIs and RPC APIs. It is used by [gRPC](https://github.com/grpc). Each `Status` message contains three pieces of data: error code, error message, and error details. You can find out more about this error model and how to work with it in the [API Design Guide](https://cloud.google.com/apis/design/errors).'
 tags:
-    - name: Article
+    - name: Category
